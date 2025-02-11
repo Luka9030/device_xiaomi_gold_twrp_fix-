@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       MANIFEST_URL:
-        description: 'MANIFEST_URL (if want to use SSH keys, use git@github.com:XXXXX)'
+        description: 'MANIFEST_URL'
         required: true
         default: 'https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp'
       MANIFEST_BRANCH:
@@ -45,18 +45,12 @@ on:
 jobs:
   build:
     if: github.event.repository.owner.id == github.event.sender.id
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04 # Change Ubuntu version to 22.04
     permissions:
       contents: write
     steps:
     - name: Check Out
       uses: actions/checkout@v4
-
-    - name: Fix Missing Dependencies
-      run: |
-        sudo dpkg --add-architecture i386
-        sudo apt update
-        sudo apt install -y libwxgtk-webview3.0-gtk3-dev libwxgtk3.0-gtk3-0v5
 
     - name: Prepare the environment
       run: |
